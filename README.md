@@ -1,4 +1,4 @@
-<h2 align="left">Hi 👋! My name is Jared and I'm a Software Developer, from Manila, Philippines.</h2>
+<h2 align="left">Hi 👋! My name is Jared and I'm a Software Developer from Manila, Philippines.</h2>
 
 ###
 
