@@ -80,7 +80,7 @@
 
 ###
 
-<img align="center" height="300" src="https://www.gifcen.com/wp-content/uploads/2022/06/anime-gif-4.gif"  />
+<img align="right" height="300" src="https://www.gifcen.com/wp-content/uploads/2022/06/anime-gif-4.gif"  />
 
 ###
 
