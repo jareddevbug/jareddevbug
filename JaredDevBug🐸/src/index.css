@@ -1,0 +1,183 @@
+
+body {
+background-color: #0e1217;
+color: #fff;
+font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+margin: 0;
+padding: 0;
+}
+
+/* NAVBAR */
+.navbar {
+background-color: #12171f;
+}
+.navbar-brand {
+font-weight: 600;
+letter-spacing: 0.5px;
+}
+.nav-link {
+color: #c8c8c8 !important;
+}
+.nav-link:hover {
+color: #fff !important;
+}
+.language-switch {
+color: #c8c8c8 !important;
+margin-left: 1rem;
+cursor: pointer;
+}
+
+/* HERO SECTION */
+.hero {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 5rem 2rem;
+background: #0e1217 url('https://via.placeholder.com/600x800') right center no-repeat;
+background-size: 300px auto;
+}
+.hero h1 {
+font-size: 3rem;
+font-weight: 700;
+color: #f03fff;
+margin-bottom: 0.5rem;
+}
+.hero h1 span {
+color: #c06fff;
+}
+.hero p {
+font-size: 1.2rem;
+max-width: 600px;
+}
+.hero img {
+   border-radius: 50%;
+   max-width: 200px;
+}
+.btn-view {
+background: linear-gradient(45deg, #6f00ff, #f03fff);
+border: none;
+color: #fff;
+margin-top: 1rem;
+padding: 0.75rem 1.5rem;
+border-radius: 50px;
+font-weight: 500;
+transition: 0.3s;
+}
+.btn-view:hover {
+opacity: 0.8;
+}
+
+/* SERVICES */
+.services {
+padding: 4rem 2rem;
+}
+.services h2 {
+color: #f03fff;
+margin-bottom: 2rem;
+}
+.service-card {
+background-color: #1b1f28;
+border: none;
+border-radius: 8px;
+padding: 2rem;
+margin-bottom: 1.5rem;
+min-height: 220px;
+transition: all 0.4s ease;
+}
+.service-card h5 {
+margin-bottom: 1rem;
+color: #fff;
+}
+.service-card p {
+color: #c8c8c8;
+}
+
+.service-card:hover {
+    transform: rotate(2deg) translateY(-7px);
+}
+
+/* SKILLS */
+.skills {
+padding: 4rem 2rem;
+text-align: center;
+}
+.skills h2 {
+color: #f03fff;
+margin-bottom: 2rem;
+}
+.skills-icons {
+font-size: 2rem;
+}
+.skills-icons i {
+margin: 1rem;
+}
+
+/* PORTFOLIO */
+.portfolio {
+padding: 4rem 2rem;
+}
+.portfolio h2 {
+color: #f03fff;
+margin-bottom: 2rem;
+}
+.portfolio-item {
+background-color: #1b1f28;
+border-radius: 8px;
+padding: 1rem;
+margin-bottom: 2rem;
+text-align: center;
+transition: all 0.4s ease;
+}
+.portfolio-item img {
+max-width: 100%;
+border-radius: 8px;
+margin-bottom: 1rem;
+}
+
+.portfolio-item:hover {
+transform: rotate(2deg) translateY(-7px);
+}
+/* CONTACT */
+.contact-section {
+padding: 4rem 2rem;
+background-color: #12171f;
+}
+.contact-section h2 {
+color: #f03fff;
+margin-bottom: 2rem;
+}
+.form-control,
+.btn-submit {
+border-radius: 30px;
+}
+.btn-submit {
+background: linear-gradient(45deg, #6f00ff, #f03fff);
+border: none;
+color: #fff;
+margin-top: 1rem;
+padding: 0.75rem 2rem;
+transition: 0.3s;
+}
+.btn-submit:hover {
+opacity: 0.8;
+}
+
+/* FOOTER */
+footer {
+background-color: #0e1217;
+text-align: center;
+padding: 1rem 0;
+font-size: 0.9rem;
+color: #c8c8c8;
+}
+.github-stats {
+display: flex;
+gap: 20px;
+justify-content: center;
+margin-top: 30px;
+}
+.github-stats img {
+height: 150px;
+border-radius: 10px;
+}

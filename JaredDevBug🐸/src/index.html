@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tetiana Zaporozhets - Frontend Developer</title>
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+  <!-- jQuery -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+    defer
+  ></script>
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    defer
+  ></script>
+  
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+
+  <link
+  rel="stylesheet"
+  href="index.css"
+  />
+
+
+  
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand text-white" href="#">TETIANA ZAPOROZHETS</a>
+      <button
+        class="navbar-toggler text-white"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navMenu"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#technologies">Technologies</a></li>
+          <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+        <span class="language-switch">EN</span>
+        <span class="language-switch">/</span>
+        <span class="language-switch">PL</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <img src="https://jared-devbug.vercel.app/assets/images/ProfilePic.jpg" alt="" srcset="">
+    <h1> FULLSTACK <span>DEVELOPER</span></h1>
+    <p>I am Jared - I catch bugs 🐸</p>
+    <button class="btn-view"><a class="nav-link" href="#portfolio">VIEW MY WORK</a></button>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="services container">
+    <h2>MY SERVICES</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="service-card">
+          <h5>Website Development</h5>
+          <p>I create websites based on ready-made designs. They look great on any device.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service-card">
+          <h5>Web Design</h5>
+          <p>I can design your website from scratch with modern and user-friendly layouts.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service-card">
+          <h5>WordPress Development</h5>
+          <p>I build easy-to-manage WordPress sites for small businesses or personal portfolios.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div id="tsparticles" style="width: 100%; height: 100vh; position: absolute; top: 0; left: 0; z-index: 0;"></div>
+
+  <article>
+    <marquee behavior="scroll" class="bus" direction="left">
+      <h2 id="BUS">🐛</h2> 
+    </marquee>
+  </article> 
+
+  <!-- SKILLS -->
+  <section id="technologies" class="skills">
+    <h2>SKILLS</h2>
+    <p>The skills, tools, and technologies I use:</p>
+    <div class="skills-icons">
+      <!-- Replace with real icons as needed -->
+     <i class="fab fa-html5"></i>
+      <i class="fab fa-css3-alt"></i>
+      <i class="fab fa-js-square"></i>
+      <i class="fab fa-bootstrap"></i>
+      <i class="fab fa-react"></i>
+      <i class="fab fa-wordpress"></i>
+    </div>
+    
+    <div class="github-stats">
+        <img src="https://github-readme-stats.vercel.app/api?username=jareddevbug&theme=react&show_icons=true&hide_border=true" alt="GitHub Stats">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs?username=jareddevbug&layout=compact&theme=react&hide_border=true" alt="Most Used Languages">
+    </div>
+  </section>
+  
+  
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="portfolio container">
+    <h2>PORTFOLIO</h2>
+    <div class="row">
+      <!-- Repeat portfolio items as needed -->
+      <div class="col-md-4">
+        <div class="portfolio-item">
+          <img src="https://th.bing.com/th/id/OIP.QkGVCVMTsVZZPrWGnlJSJAHaFj?rs=1&pid=ImgDetMain" alt="Portfolio Item" />
+          <p>Website Coding (HTML, CSS, JS)</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="portfolio-item">
+          <img src="https://cdn.dribbble.com/users/10413391/screenshots/17800374/web_mockup_13_4x.jpg" alt="Portfolio Item" />
+          <p>Website Coding (HTML, CSS, JS)</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="portfolio-item">
+          <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/c3fcaf170933775.64662d679d3ba.png" alt="Portfolio Item" />
+          <p>Website Coding (HTML, CSS, JS)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2>DO YOU HAVE A PROJECT TO DISCUSS?</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <p>GET IN TOUCH</p>
+          <p>web.smn.zty@gmail.com</p>
+          <p>SOCIAL MEDIA: 
+            <i class="fab fa-linkedin"></i> 
+            <i class="fab fa-facebook"></i> 
+            <i class="fab fa-instagram"></i> 
+            <i class="fab fa-github"></i>
+            <i class="fab fa-telegram"></i>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <form>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Name" />
+            </div>
+            <div class="mb-3">
+              <input type="email" class="form-control" placeholder="Email" />
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" rows="3" placeholder="Message"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">SEND</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    &copy; 2024 – All rights reserved, web design and development – Tetiana Zaporozhets
+  </footer>
+
+  <!-- <script>
+    $(function() {
+      $('a.nav-link').on('click', function(e) {
+        e.preventDefault();
+        const target = $(this).attr('href');
+        $('html, body').animate({ scrollTop: $(target).offset().top - 70 }, 800);
+      });
+    });
+  </script> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.min.js"></script>
+  
+  <script>
+    document.getElementById('BUS').addEventListener('click', function () {
+      tsParticles.load({
+        id: "tsparticles",
+        options: {
+          "fullScreen": { "zIndex": 1 },
+          "particles": {
+            "number": { "value": 0 },
+            "color": { "value": ["#00FFFC", "#FC00FF", "#fffc00"] },
+            "shape": {
+              "type": ["circle", "emoji"],
+              "options": {
+                "emoji": {
+                  "particles": { "size": { "value": 8 } },
+                  "value": ["💩", "🤡", "🍀", "🍙", "🦄", "⭐️"]
+                }
+              }
+            },
+            "opacity": {
+              "value": { "min": 0, "max": 1 },
+              "animation": {
+                "enable": true,
+                "speed": 2,
+                "startValue": "max",
+                "destroy": "min"
+              }
+            },
+            "size": { "value": { "min": 2, "max": 4 } },
+            "links": { "enable": false },
+            "life": { "duration": { "sync": true, "value": 5 }, "count": 1 },
+            "move": {
+              "enable": true,
+              "gravity": { "enable": true, "acceleration": 10 },
+              "speed": { "min": 10, "max": 20 },
+              "decay": 0.1,
+              "direction": "none",
+              "straight": false,
+              "outModes": { "default": "destroy", "top": "none" }
+            },
+            "rotate": {
+              "value": { "min": 0, "max": 360 },
+              "direction": "random",
+              "move": true,
+              "animation": { "enable": true, "speed": 60 }
+            },
+            "tilt": {
+              "direction": "random",
+              "enable": true,
+              "move": true,
+              "value": { "min": 0, "max": 360 },
+              "animation": { "enable": true, "speed": 60 }
+            },
+            "roll": {
+              "darken": { "enable": true, "value": 25 },
+              "enable": true,
+              "speed": { "min": 15, "max": 25 }
+            },
+            "wobble": {
+              "distance": 30,
+              "enable": true,
+              "move": true,
+              "speed": { "min": -15, "max": 15 }
+            }
+          },
+          "emitters": {
+            "life": { "count": 1, "duration": 0.1, "delay": 0.4 },
+            "rate": { "delay": 0.1, "quantity": 150 },
+            "size": { "width": 0, "height": 0 }
+          }
+        }
+      });
+    });
+  </script>
+  
+  
+  
+  
+</body>
+</html>
+
+
