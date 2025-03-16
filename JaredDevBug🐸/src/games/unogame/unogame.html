@@ -71,7 +71,7 @@
          2px  2px 0 #000000;
     }
     .card:before { top:15px; left:10px; }
-    .card:after { bottom:15px; right:10px; -webkit-transform:rotate(180deg); }
+    /* .card:after { bottom:15px; right:10px; -webkikt-transform:rotate(180deg); } */
     .card.blue { color:#0063B3; }
     .card.blue .inner { background:#0063B3; }
     .card.green { color:#18A849; }
@@ -411,7 +411,7 @@
             }
             renderGame();
             if (opponentHand.length === 0) {
-                const audio = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
+                const audio1 = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
                 const audio2 = new Audio("https://www.myinstants.com/en/instant/ginagawa-mo-28632/");
                 audio.play().catch(err => console.warn("Audio playback failed:", err));
 
@@ -454,7 +454,7 @@
 
       }else{
 
-        const audio = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
+        const audio1 = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
         const audio2 = new Audio("https://www.myinstants.com/en/instant/ginagawa-mo-28632/");
         audio.play().catch(err => console.warn("Audio playback failed:", err));
 
