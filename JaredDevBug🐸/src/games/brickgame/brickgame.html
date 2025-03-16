@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brick Breaker Game with Levels</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background-image: url(https://img.freepik.com/premium-photo/night-city-background-with-skyscrapers-reflections_993370-26.jpg);
+      background-size: cover;
+      margin: 0;
+    }
+    canvas {
+      border: 2px solid #e74c3c;
+      background-color: #0e1217;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="660" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Global variables
+    let paddle = {
+      width: 100,
+      height: 10,
+      x: canvas.width / 2 - 50,
+      y: canvas.height - 20,
+      speed: 10
+    };
+
+    let ball = {
+      x: paddle.x + paddle.width / 2,
+      y: paddle.y - 10,
+      radius: 8,
+      dx: 3,
+      dy: -3,
+      isMoving: false
+    };
+
+    // Brick dimensions
+    const brickWidth = 80;
+    const brickHeight = 20;
+    const brickPadding = 10;
+    const brickOffsetTop = 45;
+    const brickOffsetLeft = 20;
+    
+    let bricks = []; // Will be loaded per level from JSON
+    let score = 0;
+    let gameOver = false;
+    let animationFrameId;
+    
+    // Levels array will be loaded from an external JSON file
+    let levels = [];
+    let currentLevelIndex = 0;
+
+    // Load external levels JSON file
+    async function loadLevels() {
+      try {
+        const response = await fetch('brick_game_levels.json');
+        levels = await response.json();
+        loadLevel(0); // Start with the first level
+      } catch (error) {
+        console.error('Error loading levels:', error);
+      }
+    }
+
+    // Load a specific level by index
+    function loadLevel(levelIndex) {
+      const currentLevel = levels[levelIndex];
+      if (!currentLevel) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Congratulations!',
+          text: `You've completed all levels!`,
+          confirmButtonText: 'Play Again'
+        }).then(() => restartGame(true));
+        return;
+      }
+      // Update paddle and ball properties based on level settings if needed
+      paddle.width = currentLevel.paddleWidth || paddle.width;
+      ball.dx = currentLevel.ballSpeed || ball.dx;
+      ball.dy = - (currentLevel.ballSpeed || Math.abs(ball.dy));
+      
+      // Map level brick layout to bricks array
+      // Expect each brick in level.bricks to have {x, y, hits}
+      bricks = currentLevel.bricks.map(brick => ({
+        x: brick.x,
+        y: brick.y,
+        hits: brick.hits,
+        status: 1
+      }));
+      
+      // Reset ball position on paddle
+      ball.isMoving = false;
+      ball.x = paddle.x + paddle.width / 2;
+      ball.y = paddle.y - 10;
+    }
+
+    // Draw paddle
+    function drawPaddle() {
+      ctx.fillStyle = "#3498db";
+      ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+    }
+
+    // Draw ball
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#e74c3c";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    // Draw bricks with durability-based color
+    function drawBricks() {
+      bricks.forEach(brick => {
+        if (brick.status === 1) {
+          // Color based on remaining hits
+          ctx.fillStyle = brick.hits === 3 ? "#e74c3c" : brick.hits === 2 ? "#f39c12" : "#f1c40f";
+          ctx.fillRect(brick.x, brick.y, brickWidth, brickHeight);
+        }
+      });
+    }
+
+    // Draw score
+    function drawScore() {
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(`Score: ${score}`, 20, 30);
+    }
+
+    // Collision detection between ball and bricks
+    function collisionDetection() {
+      let bricksRemaining = 0;
+      bricks.forEach(brick => {
+        if (brick.status === 1) {
+          bricksRemaining++;
+          if (
+            ball.x > brick.x &&
+            ball.x < brick.x + brickWidth &&
+            ball.y > brick.y &&
+            ball.y < brick.y + brickHeight
+          ) {
+            ball.dy *= -1;
+            brick.hits -= 1;
+            if (brick.hits <= 0) {
+              brick.status = 0;
+              score += 10;
+            }
+          }
+        }
+      });
+      
+      // If all bricks are destroyed, advance to next level
+      if (bricksRemaining === 0) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Level Complete!',
+          text: `Proceeding to Level ${currentLevelIndex + 2}...`,
+          confirmButtonText: 'Next Level'
+        }).then(() => {
+          currentLevelIndex++;
+          loadLevel(currentLevelIndex);
+        });
+      }
+    }
+
+    // Move ball and handle collisions with walls, paddle, and game over
+    function moveBall() {
+      if (ball.isMoving) {
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        // Left/right wall collision
+        if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+          ball.dx *= -1;
+        }
+
+        // Top wall collision
+        if (ball.y - ball.radius < 0) {
+          ball.dy *= -1;
+        }
+
+        // Paddle collision
+        if (
+          ball.y + ball.radius > paddle.y &&
+          ball.x > paddle.x &&
+          ball.x < paddle.x + paddle.width
+        ) {
+          ball.dy *= -1;
+        }
+
+        // Bottom collision - Game Over
+        if (ball.y + ball.radius > canvas.height && !gameOver) {
+          gameOver = true;
+          cancelAnimationFrame(animationFrameId);
+          Swal.fire({
+            icon: 'error',
+            title: 'Game Over!',
+            text: `Final Score: ${score}`,
+            confirmButtonText: 'Try Again'
+          }).then(() => restartGame());
+        }
+        
+        collisionDetection();
+      } else {
+        // Keep ball on paddle before launch
+        ball.x = paddle.x + paddle.width / 2;
+        ball.y = paddle.y - 10;
+      }
+    }
+
+    // Main game loop
+    function animate() {
+      if (gameOver) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      drawPaddle();
+      drawBall();
+      drawBricks();
+      drawScore();
+      
+      moveBall();
+      
+      animationFrameId = requestAnimationFrame(animate);
+    }
+
+    // Restart game logic (optionally resetting levels)
+    function restartGame(resetLevel = false) {
+      score = 0;
+      gameOver = false;
+      ball.isMoving = false;
+      ball.x = paddle.x + paddle.width / 2;
+      ball.y = paddle.y - 10;
+      if (resetLevel) {
+        currentLevelIndex = 0;
+      }
+      loadLevel(currentLevelIndex);
+      animate();
+    }
+
+    // Paddle movement via mouse
+    canvas.addEventListener("mousemove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      if (mouseX > 0 && mouseX < canvas.width - paddle.width) {
+        paddle.x = mouseX;
+      }
+    });
+
+    // Launch the ball on left-click
+    canvas.addEventListener("mousedown", () => {
+      if (!ball.isMoving) {
+        ball.isMoving = true;
+      }
+    });
+
+    // Start game after levels load
+    async function startGame() {
+      await loadLevels();
+      animate();
+    }
+
+    startGame();
+  </script>
+</body>
+</html>

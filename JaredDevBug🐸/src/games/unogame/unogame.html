@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UNO-Style Game with Lobby</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert/dist/sweetalert.min.js"></script>
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:900);
+
+    body{
+        background-image: url(https://store-images.s-microsoft.com/image/apps.5032.67582047191807640.1f6942f5-d7bc-46df-a9db-2fa15b28dfdf.6862ba93-50f0-4bc4-b31b-565f5c7897bc?mode=scale&q=90&h=1080&w=1920);
+    }
+    .card {
+      width:96px;
+      height:158px;
+      background:#fff;
+      border-radius:5px;
+      display:table;
+      box-sizing:border-box;
+      padding:5px;
+      margin:10px;
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size:100px;
+      text-shadow:
+         1px  1px 0 #000000,
+        -1px -1px 0 #000000,
+        -1px  1px 0 #000000,
+         1px -1px 0 #000000,
+         1px  0   0 #000000,
+        -1px  0   0 #000000,
+         0   -1px 0 #000000,
+         0    1px 0 #000000,
+         4px  4px 0 #000000;
+      box-shadow:0 0 10px #aaaaaa;
+      text-align:center;
+      position:relative;
+      flex: 0 0 auto;
+      cursor: pointer;
+    }
+    .card .inner {
+      display:table-cell;
+      vertical-align:middle;
+      border-radius:5px;
+      overflow:hidden;
+    }
+    .card .mark {
+      display:inline-block;
+      vertical-align:middle;
+      background:#ffffff;
+      margin:auto;
+      padding:0 26px;
+      border-radius:100px 60px / 120px 60px;
+      line-height:1.4;
+    }
+    .card:before,
+    .card:after {
+      display:inline-block;
+      position:absolute;
+      line-height:0;
+      font-size:20px;
+      color:#ffffff;
+      text-shadow:
+         1px  1px 0 #000000,
+        -1px -1px 0 #000000,
+        -1px  1px 0 #000000,
+         1px -1px 0 #000000,
+         1px  0   0 #000000,
+        -1px  0   0 #000000,
+         0   -1px 0 #000000,
+         0    1px 0 #000000,
+         2px  2px 0 #000000;
+    }
+    .card:before { top:15px; left:10px; }
+    .card:after { bottom:15px; right:10px; -webkit-transform:rotate(180deg); }
+    .card.blue { color:#0063B3; }
+    .card.blue .inner { background:#0063B3; }
+    .card.green { color:#18A849; }
+    .card.green .inner { background:#18A849; }
+    .card.red { color:#C72A18; }
+    .card.red .inner { background:#C72A18; }
+    .card.yellow { color:#E6CA1E; }
+    .card.yellow .inner { background:#E6CA1E; }
+    .card.num-0:before, .card.num-0:after { content:"0"; }
+    .card.num-1:before, .card.num-1:after { content:"1"; }
+    .card.num-2:before, .card.num-2:after { content:"2"; }
+    .card.num-3:before, .card.num-3:after { content:"3"; }
+    .card.num-4:before, .card.num-4:after { content:"4"; }
+    .card.num-5:before, .card.num-5:after { content:"5"; }
+    .card.num-6:before, .card.num-6:after { content:"6"; }
+    .card.num-7:before, .card.num-7:after { content:"7"; }
+    .card.num-8:before, .card.num-8:after { content:"8"; }
+    .card.num-9:before, .card.num-9:after { content:"9"; }
+    .card.num-6 .mark:after,
+    .card.num-9 .mark:after {
+      display:block;
+      content:"";
+      position:relative;
+      top:-25px;
+      left:5px;
+      width:80%;
+      border:1px solid #000000;
+      height:4px;
+      box-shadow:1px 1px 0 #000000;
+    }
+    .card.num-6.blue .mark:after,
+    .card.num-9.blue .mark:after { background:#0063B3; }
+    .card.num-6.green .mark:after,
+    .card.num-9.green .mark:after { background:#18A849; }
+    .card.num-6.red .mark:after,
+    .card.num-9.red .mark:after { background:#C72A18; }
+    .card.num-6.yellow .mark:after,
+    .card.num-9.yellow .mark:after { background:#E6CA1E; }
+    /* Back side style for cards */
+    
+    .card {
+      background:#444;
+      color:#fff;
+    }
+    .card.draw-back{
+        color:#fff;
+        background: linear-gradient(
+            to right, 
+            red, 
+            orange, 
+            yellow, 
+            green, 
+            blue, 
+            indigo, 
+            violet
+        );
+    }
+    
+    /* Lobby view styles */
+    .lobby-container {
+      max-width: 400px;
+      margin: 20% auto;
+      background: #2b2b2b;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .lobby-container h1 { margin-bottom: 20px; }
+    .lobby-container label { display: block; margin-bottom: 10px; }
+    .lobby-container button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    /* Game field layout */
+    .field-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 80vh;
+    }
+    .hand-section { text-align: center; }
+    .center-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+    }
+    .draw-deck {
+      position: relative;
+      cursor: pointer;
+    }
+    .draw-deck .deck-count {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      font-size: 20px;
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    
+    /* .game-container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      background: #303030;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      border-radius: 20px;
+    } */
+
+    .game-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(83, 83, 83, 0.7); /* Transparent background */
+    backdrop-filter: blur(10px);       /* Glassmorphism effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    color: #fff;
+    font-family: Arial, sans-serif;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for depth */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Depth effect */
+}
+
+    
+    /* Hand containers: display cards horizontally; if wrapping occurs, vertical scroll appears */
+    #player-hand, #opponent-hand {
+      display: flex;
+      flex-wrap: wrap;
+      overflow-y: auto;
+      overflow-x: hidden;
+      justify-content: center;
+      max-height: 200px;
+      scrollbar-gutter: stable;
+
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer/Edge */
+
+      
+    }
+
+    #player-hand::-webkit-scrollbar, #opponent-hand::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+    }
+
+    
+    /* Hide game view until lobby selection is made */
+    #game-view { display: none; }
+  </style>
+</head>
+<body>
+  <!-- Lobby View -->
+  <div id="lobby-view" class="lobby-container">
+    <h1>UNO Lobby</h1>
+    <p>Select Difficulty:</p>
+    <label><input type="radio" name="difficulty" value="easy" checked> Easy</label>
+    <label><input type="radio" name="difficulty" value="medium"> Medium</label>
+    <label><input type="radio" name="difficulty" value="hard"> Hard</label>
+    <br>
+    <button id="start-game-btn">Start Game</button>
+  </div>
+  
+  <!-- Game View -->
+  <div id="game-view" class="game-container">
+    <h1>UNO-Style Game</h1>
+    <div id="timer" style="text-align: center; font-size: 24px; color: #fff; margin-bottom: 10px;">
+        Time Left: <span id="time-left">--</span>
+    </div>
+    
+    <div class="field-container">
+      <!-- Top: Opponent's Hand (rendered as back side) -->
+      <div class="hand-section" id="opponent-hand"></div>
+      <!-- Center: Draw Deck (left) & Discard Pile (right) -->
+      <div class="center-section">
+        <div id="deck" class="draw-deck card draw-back"></div>
+        <div id="discard" class="card"></div>
+      </div>
+      <!-- Bottom: Your Hand -->
+      <div class="hand-section" id="player-hand"></div>
+    </div>
+  </div>
+  
+  <script>
+    // Global game variables.
+    const colors = ['red', 'blue', 'green', 'yellow'];
+    const numbers = ['0','1','2','3','4','5','6','7','8','9'];
+    let deck = [];
+    let playerHand = [];
+    let opponentHand = [];
+    let discardPile = [];
+    let opponentDelay = 1000; // default delay
+    
+    // Build deck: for each color, one 0 and two of each number 1-9.
+    function buildDeck() {
+      deck = [];
+      colors.forEach(color => {
+        deck.push({color, number: '0'});
+        numbers.slice(1).forEach(number => {
+          deck.push({color, number});
+          deck.push({color, number});
+        });
+      });
+      deck.sort(() => Math.random() - 0.5);
+    }
+    
+    // Deal cards: 7 each, plus one card to the discard pile.
+    function dealCards() {
+      playerHand = deck.splice(0,7);
+      opponentHand = deck.splice(0,7);
+      discardPile.push(deck.shift());
+    }
+    
+    // Render game state.
+    function renderGame() {
+      // Render deck (draw deck): clickable card back with deck count using "?" style.
+      const deckEl = document.getElementById('deck');
+      deckEl.className = 'draw-deck card draw-back';
+      deckEl.innerHTML = `<span class="inner"><span class="mark">?</span></span><span class="deck-count">${deck.length}</span>`;
+      
+      // Render discard pile.
+      const discardEl = document.getElementById('discard');
+      const topCard = discardPile[discardPile.length - 1];
+      discardEl.className = `card num-${topCard.number} ${topCard.color}`;
+      discardEl.innerHTML = `<span class="inner"><span class="mark">${topCard.number}</span></span>`;
+      
+      // Render player's hand.
+      const playerDiv = document.getElementById('player-hand');
+      playerDiv.innerHTML = '';
+      playerHand.forEach((card, index) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = `card num-${card.number} ${card.color}`;
+        cardEl.innerHTML = `<span class="inner"><span class="mark">${card.number}</span></span>`;
+        cardEl.onclick = () => playCard(index);
+        playerDiv.appendChild(cardEl);
+      });
+      
+      // Render opponent's hand as back-side cards (color and number hidden).
+      const opponentDiv = document.getElementById('opponent-hand');
+      opponentDiv.innerHTML = '';
+      opponentHand.forEach(() => {
+        // Use the "back" style for every opponent card.
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card back';
+        cardEl.innerHTML = `<span class="inner"><span class="mark">?</span></span>`;
+        opponentDiv.appendChild(cardEl);
+      });
+    }
+    
+    // Check if a card can be played.
+    function canPlay(card) {
+      const top = discardPile[discardPile.length - 1];
+      return card.color === top.color || card.number === top.number;
+    }
+    
+    // // Player plays a card.
+    // function playCard(index) {
+    //   const card = playerHand[index];
+    //   if (!canPlay(card)) {
+    //     swal("Invalid Move", "You can't play that card.", "error");
+    //     return;
+    //   }
+    //   discardPile.push(card);
+    //   playerHand.splice(index, 1);
+    //   renderGame();
+    //   if (playerHand.length === 0) {
+    //     swal("Congratulations!", "You win!", "success");
+    //     return;
+    //   }
+    //   setTimeout(opponentTurn, opponentDelay);
+    // }
+
+
+    let moveLock = false; // Global flag
+    let drawLock = false; // Global flag
+
+    function playCard(index) {
+    if (moveLock) return;  // Ignore if a move is already in progress
+    moveLock = true;
+    
+    const card = playerHand[index];
+    if (!canPlay(card)) {
+        swal("Invalid Move", "You can't play that card.", "error");
+        moveLock = false;
+        return;
+    }
+    discardPile.push(card);
+    playerHand.splice(index, 1);
+    renderGame();
+    if (playerHand.length === 0) {
+        const audio1 = new Audio("https://www.myinstants.com/en/instant/magaling-kang-kupal-75697/");
+        const audio2 = new Audio("https://www.myinstants.com/en/instant/dalawang-beses-nayan-pinoy-38338/");
+
+        audio1.play().then(() => {
+            audio2.play().catch(err => console.warn("Audio 2 playback failed:", err));
+        }).catch(err => console.warn("Audio 1 playback failed:", err));
+
+        swal({
+            title: "Congratulations!",
+            text: "You Win!",
+            icon: "https://th.bing.com/th/id/OIP.m_HuBezLqLYyr3K3FK5hzQHaHa?pid=ImgDet&w=184&h=184&c=7&dpr=1.3",
+            buttons: false,
+            timer: 6000
+        }).then(() => {
+            location.reload();
+        });
+
+        return;
+    }
+
+
+    setTimeout(() => {
+        opponentTurn();
+        moveLock = false; // Unlock after opponent turn completes
+    }, opponentDelay);
+    }
+
+    // Opponent AI: plays the first valid card or draws a card.
+    function opponentTurn() {
+        setTimeout(() => {
+            let played = false;
+            for (let i = 0; i < opponentHand.length; i++) {
+                if (canPlay(opponentHand[i])) {
+                    discardPile.push(opponentHand[i]);
+                    opponentHand.splice(i, 1);
+                    played = true;
+                    break;
+                }
+            }
+            if (!played && deck.length > 0) {
+                opponentHand.push(deck.shift());
+            }
+            renderGame();
+            if (opponentHand.length === 0) {
+                const audio = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
+                const audio2 = new Audio("https://www.myinstants.com/en/instant/ginagawa-mo-28632/");
+                audio.play().catch(err => console.warn("Audio playback failed:", err));
+
+                audio1.play().then(() => {
+                    audio2.play().catch(err => console.warn("Audio 2 playback failed:", err));
+                }).catch(err => console.warn("Audio 1 playback failed:", err));
+
+                swal({
+                    title: "Game Over",
+                    text: "Opponent wins!",
+                    icon: "https://th.bing.com/th/id/OIP.m_HuBezLqLYyr3K3FK5hzQHaHa?pid=ImgDet&w=184&h=184&c=7&dpr=1.3", 
+                    buttons: false,
+                    timer: 6000
+                }).then(() => {
+                    location.reload();
+                });
+                return;
+            }
+            // swal("Your Turn", "It's your turn.", "info");
+        }, 500); // 1-second delay
+    }
+
+    
+    // Clicking the deck draws a card.
+    document.getElementById('deck').addEventListener('click', () => {
+
+    if (drawLock) return;  // Ignore if a move is already in progress
+        drawLock = true;
+
+      if (deck.length > 0) {
+        playerHand.push(deck.shift());
+        renderGame();
+        // setTimeout(opponentTurn, opponentDelay);
+
+        setTimeout(() => {
+            opponentTurn();
+            drawLock = false; // Unlock after opponent turn completes
+        }, opponentDelay);
+
+
+      }else{
+
+        const audio = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
+        const audio2 = new Audio("https://www.myinstants.com/en/instant/ginagawa-mo-28632/");
+        audio.play().catch(err => console.warn("Audio playback failed:", err));
+
+        audio1.play().then(() => {
+            audio2.play().catch(err => console.warn("Audio 2 playback failed:", err));
+        }).catch(err => console.warn("Audio 1 playback failed:", err));
+
+        swal({
+            title: "Game Over",
+            text: "Opponent wins!",
+            icon: "https://th.bing.com/th/id/OIP.m_HuBezLqLYyr3K3FK5hzQHaHa?pid=ImgDet&w=184&h=184&c=7&dpr=1.3", 
+            buttons: false,
+            timer: 6000
+        }).then(() => {
+            location.reload();
+        });
+        return;
+
+      }
+    });
+    
+    document.getElementById('start-game-btn').addEventListener('click', () => {
+        const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+
+        let timerValue;
+        if (difficulty === "easy") {
+            opponentDelay = 1500;
+            timerValue = 120;
+        } else if (difficulty === "medium") {
+            opponentDelay = 1000;
+            timerValue = 90;
+        } else if (difficulty === "hard") {
+            opponentDelay = 500;
+            timerValue = 60;
+        }
+
+        // Countdown Timer Logic
+        const timerElement = document.getElementById('timer');
+        timerElement.textContent = "Timer: " + timerValue;
+
+        document.getElementById('lobby-view').style.display = 'none';
+        document.getElementById('game-view').style.display = 'block';
+
+        buildDeck();
+        dealCards();
+        renderGame();
+
+        swal("Your Turn", "Let's start the game in " + difficulty + " mode!", "info").then(() => {
+            const countdown = setInterval(() => {
+                timerValue--;
+                timerElement.textContent = "Timer: " + timerValue;
+
+                if (timerValue <= 0) {
+                    clearInterval(countdown);
+                    swal("Time's Up!", "The game is over!", "warning");
+
+                    const audio = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
+                    audio.play().catch(err => console.warn("Audio playback failed:", err));
+
+                    swal({
+                        title: "Game Over",
+                        text: "Opponent wins!",
+                        icon: "https://th.bing.com/th/id/OIP.m_HuBezLqLYyr3K3FK5hzQHaHa?pid=ImgDet&w=184&h=184&c=7&dpr=1.3", 
+                        buttons: false,
+                        timer: 6000
+                    }).then(() => {
+                        location.reload();
+                    });
+
+                    return;
+                }
+            }, 1000);
+        });
+    });
+
+
+
+  </script>
+</body>
+</html>
