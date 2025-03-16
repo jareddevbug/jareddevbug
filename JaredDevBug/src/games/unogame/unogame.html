@@ -413,7 +413,6 @@
             if (opponentHand.length === 0) {
                 const audio1 = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
                 const audio2 = new Audio("https://www.myinstants.com/en/instant/ginagawa-mo-28632/");
-                audio.play().catch(err => console.warn("Audio playback failed:", err));
 
                 audio1.play().then(() => {
                     audio2.play().catch(err => console.warn("Audio 2 playback failed:", err));
@@ -456,7 +455,6 @@
 
         const audio1 = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
         const audio2 = new Audio("https://www.myinstants.com/en/instant/ginagawa-mo-28632/");
-        audio.play().catch(err => console.warn("Audio playback failed:", err));
 
         audio1.play().then(() => {
             audio2.play().catch(err => console.warn("Audio 2 playback failed:", err));
@@ -511,8 +509,12 @@
                     clearInterval(countdown);
                     swal("Time's Up!", "The game is over!", "warning");
 
-                    const audio = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
-                    audio.play().catch(err => console.warn("Audio playback failed:", err));
+                    const audio1 = new Audio("https://www.myinstants.com/media/sounds/ngakak-laugh-annoying.mp3");
+                    const audio2 = new Audio("https://www.myinstants.com/en/instant/ginagawa-mo-28632/");
+
+                    audio1.play().then(() => {
+                        audio2.play().catch(err => console.warn("Audio 2 playback failed:", err));
+                    }).catch(err => console.warn("Audio 1 playback failed:", err));
 
                     swal({
                         title: "Game Over",
