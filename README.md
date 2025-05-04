@@ -4,7 +4,7 @@
 
 <p align="justify">💡Building Solutions, One Line at a Time!<br><br>Hi there! I am a passionate tech enthusiast who loves turning innovative ideas into functional, efficient, and impactful software. I keep up with modern web development trends, and I am always excited to explore new technologies.
 
-I would love to connect and chat about code, innovation, or anything else tech-related! Let’s collaborate and see what we can create together!</p>
+I would love to connect via LinkedIn and chat about code, innovation, or anything else tech-related! Let’s collaborate and see what we can create together!</p>
 
 ###
 
